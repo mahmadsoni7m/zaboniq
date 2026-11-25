@@ -1,0 +1,9 @@
+<resources>
+    <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/zaboniq_background</item>
+        <item name="android:statusBarColor">@color/zaboniq_background</item>
+        <item name="android:navigationBarColor">@color/zaboniq_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorAccent">@color/zaboniq_purple</item>
+    </style>
+</resources>

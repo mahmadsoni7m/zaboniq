@@ -1,0 +1,13 @@
+<resources>
+    <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/zaboniq_background</item>
+        <item name="android:statusBarColor">@color/zaboniq_background</item>
+        <item name="android:navigationBarColor">@color/zaboniq_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:colorAccent">@color/zaboniq_purple</item>
+        <item name="android:windowSplashScreenBackground">@color/zaboniq_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/zaboniq</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">@color/zaboniq_background</item>
+        <item name="postSplashScreenTheme">@style/AppTheme</item>
+    </style>
+</resources>
