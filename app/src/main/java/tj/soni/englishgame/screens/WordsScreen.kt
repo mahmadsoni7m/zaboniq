@@ -24,6 +24,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
@@ -59,8 +61,16 @@ fun WordsScreen(category: Category, onBack: () -> Unit) {
     var learnedIds by remember(category.id) {
         mutableStateOf(LearnedWordsStore.getLearnedIds(context))
     }
-    val orderedWords = remember(category) {
-        category.words
+    val orderedWords = remember(category, learnedIds) {
+        category.words.sortedBy { it.id in learnedIds }
+    }
+    val listState = rememberLazyListState()
+    var savedScroll by remember { mutableStateOf<Pair<Int, Int>?>(null) }
+    LaunchedEffect(learnedIds) {
+        savedScroll?.let { (index, offset) ->
+            listState.scrollToItem(index, offset)
+            savedScroll = null
+        }
     }
     val learnedCount = category.words.count { it.id in learnedIds }
     val total = category.words.size
@@ -94,6 +104,7 @@ fun WordsScreen(category: Category, onBack: () -> Unit) {
         }
 
         LazyColumn(
+            state = listState,
             contentPadding = PaddingValues(start = 18.dp, end = 18.dp, top = 6.dp, bottom = 20.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
@@ -102,7 +113,10 @@ fun WordsScreen(category: Category, onBack: () -> Unit) {
                 WordCard(
                     word = word,
                     learned = learned,
-                    onToggle = { learnedIds = LearnedWordsStore.toggle(context, word.id) },
+                    onToggle = {
+                        savedScroll = listState.firstVisibleItemIndex to listState.firstVisibleItemScrollOffset
+                        learnedIds = LearnedWordsStore.toggle(context, word.id)
+                    },
                     modifier = Modifier.animateItem()
                 )
             }
